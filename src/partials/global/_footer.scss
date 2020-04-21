@@ -1,0 +1,14 @@
+footer {
+	background-color: #fff;
+	padding: 0 2em 2em;
+	font-size: 0.6em;
+	.columns {
+		border-top: 0px solid #aaaaaa;
+	}
+	p{
+		padding:1em;
+	}
+	@media screen and (max-width: 760px) {
+		background-color: lighten($grey,2%);
+	}
+}

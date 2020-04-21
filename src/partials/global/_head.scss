@@ -1,0 +1,70 @@
+nav.navbar {
+    a.navbar-item:link {
+        color: $purple;
+    }
+
+    a.navbar-item:hover,
+    a.navbar-link:hover {
+        background-color: $purple;
+        color: $grey;
+    }
+
+    .navbar-end a.navbar-item {
+        font-size: 1.8em;
+    }
+
+    .navbar-end a.navbar-item:link,
+    .navbar-end a.navbar-item:visited {
+        color: darken($grey, 20%);
+    }
+
+    .navbar-end a.navbar-item:hover {
+        color: lighten($grey, 20%);
+    }
+
+    .navbar-end {
+        padding-right: 1em;
+    }
+
+    section.brand {
+        border-bottom: 1px solid $grey;
+
+        h3 {
+            padding: 0.4em 0 0.8em 1.2em;
+            font-size: 0.8em;
+        }
+    }
+
+    .navbar-burger {
+        span {
+            height: 3px;
+            width: 20px;
+        }
+    }
+
+    @media screen and (max-width: 760px) {
+        .navbar-start {
+            background-color: $purple;
+        }
+        .navbar-item.baisse {
+            font-size: 1.4em;
+            color: $white;
+        }
+    }
+
+    .navbar-end {
+        @media #{$max-sm} {
+            position: absolute;
+            top: -0.4em;
+            left: 12em;
+        }
+     }
+
+    .field.is-grouped {
+        .navbar-item {
+           padding: 0.5rem 0.4rem !important;
+        }
+    }
+}
+
+

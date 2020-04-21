@@ -1,0 +1,50 @@
+h2.contact {
+	font-size: 2em;
+	padding-bottom: 2em;
+}
+#confirmation {
+	margin: 0.6em;
+	background-color: $blue;
+	padding: 0.4em;
+	display: none;
+}
+#contact {
+	padding-bottom: 1em;
+	label {
+		font-weight: normal;
+		color: #fff;
+	}
+	span.error {
+		color: adjust-hue($purple, 180deg);
+		color: $blue;
+		height: 1.4em;;
+	}
+	button#submit{
+		background-color: adjust-hue($purple, 180deg);
+		background-color: $blue;
+	}
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+	background-color: rgb(250, 255, 255);
+	background-image: none;
+	color: rgb(0, 0, 0);
+}
+@media screen and (max-width: 760px) {
+	.is-12{
+		padding:0 1.6em 0 0 !important;
+	}
+	.purplepage {
+		.form {
+			padding-left: 60px !important;
+		}
+	}
+}
+
+@media screen and (min-width: 761px) and (max-width: 1000px) {
+	.purplepage {
+		.form {
+			padding-left: 0px !important;
+		}
+	}
+}

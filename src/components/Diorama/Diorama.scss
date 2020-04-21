@@ -1,0 +1,23 @@
+.illustration {
+    text-align: center;
+    min-height: 500px;
+
+    .wrapped {
+        display: inline-block;
+
+        div {
+            margin: 12px;
+            float: left;
+            cursor: crosshair;
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+}
+
+.cinqcent {
+    max-width: 400px;
+}
