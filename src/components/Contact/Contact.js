@@ -45,7 +45,7 @@ class Contact extends React.Component {
         };
 
         function validateEmail(email) {
-            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(String(email).toLowerCase());
         }
 
@@ -59,16 +59,7 @@ class Contact extends React.Component {
         }
 
         fetch(
-            FETCH_ADDRESS,
-            {
-                 method: 'POST',
-                 mode: 'no-cors',
-                 headers: {
-                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                     'X-Requested-With': 'XMLHttpRequest',
-                 },
-                 body: JSON.stringify(formData)
-            }
+            FETCH_ADDRESS + '?json=' + encodeURIComponent(JSON.stringify(formData)),
         )
         .then(e => e.text())
         .then(e => {

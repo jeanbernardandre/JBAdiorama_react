@@ -10,11 +10,13 @@
 	.columns {
 		border-top: 0px solid darken($grey, 30%);
 	}
+
 	h1.titre{
 		font-family: $fonttitre;
-		font-size:2.4em;
+		font-size: 2.4em;
 		padding: 1em 0;
-	} 
+	}
+
 	.data{
 		background-color: lighten($grey,0%);
 		padding: 2em;;
@@ -23,7 +25,6 @@
 	.image-pad{
 		padding: 1em 0.5em;
 	}
-
 
 	@media screen and (max-width: 760px) {
 		p{

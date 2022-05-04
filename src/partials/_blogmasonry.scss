@@ -1,5 +1,6 @@
 .header-wrapper {
-    height: 100vh;
+    margin-top: 1.8em;
+
 }
 .header-galery, .header-home {
     padding : 0 1em;
@@ -22,9 +23,63 @@
         }
     }
 }
+.header-galery h1 {
+    padding-top: 1em;
+
+    &.partners {
+        margin-bottom: 0;
+    }
+}
+
 
 .header-home {
-    min-height: 400px;
+    position: relative;
+
+    @media #{$md} {
+        min-height: 600px;
+    }
+    @media #{$max-md} {
+        min-height: 300px;
+    }
+
+
+    &.home {
+        padding: 80px;
+        text-align: center;
+        background-size: cover;
+        background-position: center;
+
+        @media #{$md} {
+            outline: 6px solid white;
+            outline-offset: -34px;
+        }
+
+        @media #{$max-md} {
+            outline: 2px solid white;
+            outline-offset: -5px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 8em;
+            text-transform: uppercase;
+            font-weight: 600;
+            text-align: center;
+            margin: auto;
+
+            color: white;
+
+            @media #{$max-md} {
+                font-size: 3em;
+                width: 100%;
+            }
+
+            @media #{$md} {
+                width: 90%;
+                padding-top: 126px;
+            }
+        }
+    }
 
     .text {
         color: $white;

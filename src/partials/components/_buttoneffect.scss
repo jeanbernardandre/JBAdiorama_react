@@ -1,6 +1,6 @@
 $white: #ececec;
 $black: #111111;
-$red1: beige;
+$red1: $purple;
 $red2: #ccc;
 $colorPrimary: $red1;
 $colorSecondary: $red2;
@@ -59,6 +59,11 @@ $cubic-bezier: cubic-bezier(0.68, -0.55, 0.265, 1.55);
                 left: 0.35rem;
             }
         }
+
+        @media #{$max-md} {
+            padding: 0.1em;
+            cursor: hand;
+        }
     }
 }
 
@@ -67,6 +72,11 @@ a {
     text-transform: uppercase;
     text-decoration: none;
     font-weight: 700;
+
+    > h2 {
+        font-weight: bold !important;
+        color: $purple !important;
+    }
 }
 
 @keyframes top {
@@ -87,4 +97,4 @@ a {
     }
 }
 
-@include btn__split($colorPrimary, $colorSecondary, $black);
+//@include btn__split($colorPrimary, $colorSecondary, $black);

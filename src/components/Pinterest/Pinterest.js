@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './Pinterest.css';
 
 class Pinterest extends React.Component {

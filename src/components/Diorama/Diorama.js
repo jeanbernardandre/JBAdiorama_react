@@ -1,11 +1,12 @@
-    import React, {Component} from 'react';
-    import './Diorama.css';
-    import {ADDRESS_V2, ADDRESS_V3} from '../../constants';
-    import Lightbox from 'react-image-lightbox';
-    import 'react-image-lightbox/style.css';
-    import Pinterest from './../Pinterest';
+import React, {Component} from 'react';
+import './Diorama.css';
+import {ADDRESS_V2, ADDRESS_V3} from '../../constants';
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
+import {isMobile} from 'react-device-detect';
+import Pinterest from './../Pinterest';
 
-    class Diorama extends Component {
+class Diorama extends Component {
     constructor() {
         super();
         this.state = {
@@ -30,7 +31,7 @@
     }
 
     componentWillMount() {
-        let pageul = ADDRESS_V2 + "posts/" + this.props.match.params.number;
+        let pageul = ADDRESS_V2 + 'posts/' + this.props.match.params.number;
         fetch(pageul)
         .then(response => response.json())
         .then(response => {
@@ -57,9 +58,10 @@
         });
         galerie.slice(0, 2);
         let i = 0;
+        let limit = isMobile ? 100 : 3;
         let ls = galerie.map((gal, photoIndex) => {
             i++;
-            if (i < 3) { // on limite la qtté de photos dans la galerie
+            if (i <= limit) { // on limite la qtté de photos dans la galerie
                 return (
                     <div key={photoIndex} className="pinterestImageWrapper">
                         <Pinterest
@@ -68,24 +70,51 @@
                             alt= {gal.alt}
                         />
                         <img
-                            alt=""
-                            src={gal.sizes.medium_large}
+                            alt={gal.alt}
+                            src={gal.sizes.medium}
                             onClick={() => this.setState({isOpen: true, photoIndex: photoIndex})}
                             className="cinqcent"
                         />
                     </div>
                 )
+            } else {
+                return '';
             }
         });
+
+        let lsMiniature = '';
+        if (isMobile === false) {
+            lsMiniature = galerie.map((gal, photoIndex) => {
+                i++;
+                return (
+                    <div key={photoIndex} className="pinterestImageWrapper imageWrapper">
+                        <Pinterest
+                            url={gal.link}
+                            img={gal.sizes.large}
+                            alt={gal.alt}
+                        />
+                        <img
+                            alt={gal.alt}
+                            src={gal.sizes.thumbnail}
+                            onClick={() => this.setState({isOpen: true, photoIndex: photoIndex})}
+                            className="cinqcent"
+                        />
+                    </div>
+                )
+            });
+        }
 
         return (
             <div key={diorama.id}>
                 <section className="illustration">
                     <section className="texte">
-                        <h2 className="titre" dangerouslySetInnerHTML={{ __html: diorama.title.rendered }}/>
+                        <h1 className="titre" dangerouslySetInnerHTML={{ __html: diorama.title.rendered }}/>
                     </section>
                     <div className="wrapped">
                         {ls}
+                    </div>
+                    <div className="wrappedminiatures">
+                        {lsMiniature}
                     </div>
                 </section>
                 {
@@ -119,19 +148,25 @@
                         <div className="column has-text-centered sold">
                             {
                               diorama.acf.vendu
-                                ? <div className="purple">sold</div>
+                                ? <div className="purple">sold / unavailable</div>
                                 : <div className="neutral"></div>
                             }
                         </div>
                     </div>
                     <div className="columns v2">
                         <div className="column is-one-third size">
-                            Size of the scene : {diorama.acf.size_of_the_scene}cm
-                            <br/>
-                            Size of the frame : {diorama.acf.size_of_the_frame}cm
+                            {diorama.acf.size_of_the_scene &&
+                                <div>
+                                    Size of the scene : {diorama.acf.size_of_the_scene}cm
+                                    <br/>
+                                    Size of the frame : {diorama.acf.size_of_the_frame}cm
+                                </div>
+                            }
                         </div>
                         <div className="column desc">
-                            <h2>About</h2>
+                            {diorama.content.rendered !== '' &&
+                                <h2>About</h2>
+                            }
                             <p className="dioramaText" dangerouslySetInnerHTML={{ __html: diorama.content.rendered }} />
                         </div>
                     </div>

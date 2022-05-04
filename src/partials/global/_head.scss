@@ -1,4 +1,71 @@
 nav.navbar {
+    #navMenubd-example {
+        margin-left: 140px;
+        position: absolute;
+        width: 100%;
+        margin-top: 1em;
+    }
+
+    .navbar-end {
+        .navbar-item .icon:only-child, .navbar-link .icon:only-child {
+            margin-left: -0.25rem;
+            margin-right: -0.25rem;
+            padding-left: 0;
+            width: 40px;
+
+        }
+
+        .navbar-item {
+            a {
+                &.logo {
+                    &:hover {
+                        background-color: none ;
+                    }
+                }
+                    &:hover {
+                    background-color: #ded9d9 !important;
+                }
+
+            }
+
+            .navbar-item:first-of-type {
+                @media #{$max-md} {
+                    width: 40px;
+                }
+
+                @media #{$md} {
+                    width: 200px;
+                    height: 40px;
+
+                    .icon {
+                        width: 200px;
+                        height: 60px;
+                    }
+                }
+            }
+
+            .navbar-item:not(:first-of-type) {
+                width: 40px;
+                text-align: center;
+
+                @media #{$md} {
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+
+    .logo {
+        width: 118px;
+        position: absolute;
+        padding: 4px 0 0 4px;
+
+        img {
+            max-height: none;
+            border-bottom: 4px solid white;
+        }
+    }
+
     a.navbar-item:link {
         color: $purple;
     }
@@ -37,18 +104,20 @@ nav.navbar {
 
     .navbar-burger {
         span {
-            height: 3px;
-            width: 20px;
+            height: 4px;
+            width: 26px;
+            z-index: 9999;
         }
     }
 
     @media screen and (max-width: 760px) {
         .navbar-start {
             background-color: $purple;
+            border-left: 1px solid #fff;
         }
         .navbar-item.baisse {
             font-size: 1.4em;
-            color: $white;
+            color: $white !important;
         }
     }
 
@@ -56,7 +125,7 @@ nav.navbar {
         @media #{$max-sm} {
             position: absolute;
             top: -0.4em;
-            left: 12em;
+            right: 3em;
         }
      }
 
@@ -67,4 +136,19 @@ nav.navbar {
     }
 }
 
+.navbar-burger span {
+    height: 2px;
+    left: calc(32% - 8px);
+}
 
+.navbar-burger span:nth-child(2) {
+    top: calc(50% - -1px);
+}
+
+.navbar-burger span:nth-child(3) {
+    top: calc(50% + 8px);
+}
+
+.navbar-burger.is-active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}

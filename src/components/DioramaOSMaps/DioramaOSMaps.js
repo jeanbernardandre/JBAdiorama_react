@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import './DioramaOSMaps.css';
-import {ADDRESS_PAGES, ADDRESS_V2, PAGE_GALLERY} from '../../constants';
+import {ADDRESS_PAGES, ADDRESS_V2} from '../../constants';
 import {CATEGORIE_DIORAMA, LOADER_COLOR, SECONDARY_COLOR, PAGE_MAPS} from '../../constants';
 import {Link} from 'react-router-dom';
-import { Map as LeafletMap, Marker, Popup , GeoJSON} from 'react-leaflet';
+import {Map as LeafletMap, Marker, Popup , GeoJSON} from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import worldGeoJSON from 'geojson-world-map';
+import {RingLoader} from "react-spinners";
 
 const DEFAULT_VIEWPORT = {
     center: [51.505, -0.09],
@@ -47,16 +48,16 @@ class DioramaOSMaps extends Component {
             lng: 1,
             zoom: 3,
             viewport: DEFAULT_VIEWPORT,
+            loadinMap: true,
         }
         this.handleSearch = this.handleSearch.bind(this);
     }
 
     onClickReset = () => {
-        this.setState({ viewport: DEFAULT_VIEWPORT })
+        this.setState({viewport: DEFAULT_VIEWPORT})
     }
 
     loadTxtpage = () => {
-        let {pageMaps} = this.state;
         this.setState({loading: true});
         let pageurl = ADDRESS_PAGES + PAGE_MAPS;
         fetch(pageurl)
@@ -64,28 +65,28 @@ class DioramaOSMaps extends Component {
             .then(response => {
                 this.setState({
                     pageMaps: response,
-                    loading: false})
+                })
             })
             .catch(
                 error => this.setState({
-                    error,
-                    loading: false
+                    error
                 })
             );
     };
 
     componentDidMount() {
-        this.setState({loading: true});
+        this.setState({
+            loadingMap: true
+        });
         this.loadTxtpage();
 
         let pageurl = ADDRESS_V2 + 'posts/?categories=' + CATEGORIE_DIORAMA;
-        console.log(pageurl);
         fetch(pageurl)
             .then(response => response.json())
             .then(response => {
                 this.setState({
                     dioramas: response,
-                    loading: false,
+                    loadingMap: false,
                 })
             })
     }
@@ -95,16 +96,25 @@ class DioramaOSMaps extends Component {
     }
 
     render() {
-        let {dioramas, pageMaps} = this.state;
+        let {dioramas, pageMaps, loadingMap} = this.state;
         const iconPerson = new L.Icon({
             iconUrl: require('../../img/markerb.svg'),
             iconRetinaUrl: require('../../img/markerb.svg'),
-            iconSize: new L.Point(30, 30),
+            iconSize: new L.Point(10, 10),
             className: 'leaflet-div-icon'
         });
 
-        const renderedMarkers = (dioramas && dioramas.length > 0)
-            ? dioramas.map(diorama => {
+        if (loadingMap) {
+            return (
+                <div className="loading">
+                    <div className='sweet-loading'>
+                        <RingLoader color={LOADER_COLOR} loading={true}/>
+                    </div>
+                </div>
+            )
+        }
+
+        const renderedMarkers = (dioramas && dioramas.length > 0) ? dioramas.map(diorama => {
                 return (
                     <Marker icon={iconPerson} key={diorama.id} position={[diorama.acf.gmapes.lat, diorama.acf.gmapes.lng]}>
                         {diorama.title.rendered && <Popup>
@@ -115,8 +125,8 @@ class DioramaOSMaps extends Component {
             }): null;
 
         return (
-            <div>
-                <div key={pageMaps.id} className="header-galery">
+            <div className="maps">
+                <div key={pageMaps.id} className="header-galery-maps">
                     <h1 dangerouslySetInnerHTML={{
                         __html: pageMaps.title.rendered
                     }}/>
@@ -132,7 +142,7 @@ class DioramaOSMaps extends Component {
                         attributionControl={true}
                         zoomControl={true}
                         doubleClickZoom={true}
-                        scrollWheelZoom={true}
+                        scrollWheelZoom={false}
                         dragging={true}
                         animate={true}
                         easeLinearity={0.35}

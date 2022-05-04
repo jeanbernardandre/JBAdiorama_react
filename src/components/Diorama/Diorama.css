@@ -1,17 +1,3 @@
-.illustration {
-  text-align: center;
-  min-height: 500px; }
-  .illustration .wrapped {
-    display: inline-block; }
-    .illustration .wrapped div {
-      margin: 12px;
-      float: left;
-      cursor: crosshair; }
-      .illustration .wrapped div img {
-        width: 100%;
-        height: auto; }
 
-.cinqcent {
-  max-width: 400px; }
 
 /*# sourceMappingURL=Diorama.css.map */

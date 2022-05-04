@@ -51,7 +51,8 @@ class VideoImages extends Component
     videoNotExists(img, imgF) {
         if (img !== '') {
             return (
-                <a href={ imgF }><img src={ img } alt="" className="img_responsive" /></a>
+               /* <a href={ imgF }><img src={ img } alt="" className="img_responsive" /></a>*/
+                <img src={ img } alt="" className="img_responsive" />
             );
         }
     }

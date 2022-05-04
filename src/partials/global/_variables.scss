@@ -29,12 +29,14 @@ $ipad: "screen and (min-width: #{$bp-max-sm} ) and (max-width: #{$bp-max-md})";
 $ipadpro: "screen and (min-width: #{$bp-max-sm} ) and (max-width: #{$bp-max-lg})";
 
 $purple: #117893;
+$truepurple : #f13ab8;
 $grey: #f6f6f6;
-$brown: #f0daa4;
+$brown: lighten($purple, 20%);
 $secondarybrown: coral;
 $lightbrown: brown;
 $white: #ffffff;
 $black: #000000;
+$blacklogo : #373737;
 
 $blue:#117893;
 $fonttexte: brandonregular,Arial,sans-serif;

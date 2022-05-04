@@ -5,9 +5,9 @@ Error: File to import not found or unreadable: bulma/bulma.
 1: @import 'bulma/bulma';
 2: @import 'partials/fonts';
 3: @import 'partials/global/variables';
-4: @import 'partials/components/loading';
-5: @import 'partials/pinterest';
-6: @import 'partials/global/html';
+4: @import 'partials/global/modals';
+5: @import 'partials/components/loading';
+6: @import 'partials/components/more';
 
 Backtrace:
 App.scss:1
@@ -46,4 +46,4 @@ App.scss:1
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: File to import not found or unreadable: bulma/bulma.\A         on line 1 of App.scss\A \A 1: @import 'bulma/bulma';\A 2: @import 'partials/fonts';\A 3: @import 'partials/global/variables';\A 4: @import 'partials/components/loading';\A 5: @import 'partials/pinterest';\A 6: @import 'partials/global/html';"; }
+  content: "Error: File to import not found or unreadable: bulma/bulma.\A         on line 1 of App.scss\A \A 1: @import 'bulma/bulma';\A 2: @import 'partials/fonts';\A 3: @import 'partials/global/variables';\A 4: @import 'partials/global/modals';\A 5: @import 'partials/components/loading';\A 6: @import 'partials/components/more';"; }

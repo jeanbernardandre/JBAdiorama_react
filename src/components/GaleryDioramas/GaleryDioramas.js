@@ -1,21 +1,24 @@
-import React, { Component} from 'react';
+import React, {Component} from 'react';
 import './GaleryDioramas.css';
-import {ADRESS_IMAGES, LOADER_COLOR, ADDRESS_PAGES, PAGE_GALLERY} from '../../constants';
+import {
+    ADRESS_IMAGES,
+    LOADER_COLOR,
+    GALERY_PAGE,
+    ADDRESS_V2,
+    META_TITLE,
+    META_DESCRIPTION
+} from '../../constants';
 import {CircleLoader, RingLoader} from 'react-spinners';
 import ModalImage from 'react-modal-image';
 import pinterest from './../../img/pinterest.svg';
-import InfiniteScroll from 'react-infinite-scroller';
+import {gen4} from './../../utils/keygen.js';
+import {InfiniteScroll} from 'react-simple-infinite-scroll';
+import HelmetComponent from './../HelmetComponent';
 
 class GaleryDioramas extends Component {
     constructor() {
         super();
         this.state = {
-            dioramas: [],
-            loading: true,
-            error: null,
-            page: 1,
-            total_pages: 1,
-            total_increased: false,
             pageGalery: {
                 title: {
                     rendered: ''
@@ -26,21 +29,42 @@ class GaleryDioramas extends Component {
                 featured_media: {
                     rendered: ''
                 }
-            }
+            },
+            items: [],
+            total_pages: 0,
+            isLoading: true,
+            cursor: 0
         }
     }
 
-    loadUser = (pageD) => {
-        let {dioramas, page, total_pages, total_increased} = this.state;
+    componentDidMount() {
+        this.loadUser();
+        let pageurl = ADDRESS_V2 + 'pages/' + GALERY_PAGE;
+        fetch(pageurl)
+            .then(response => response.json())
+            .then(response => {
+                this.setState({
+                    pageGalery: response,
+                    loading: false
+                })
+            });
 
-        page +=1;
-        let pageurl = ADRESS_IMAGES + page;
+    }
 
-        fetch (pageurl)
+    loadUser = () => {
+        this.setState({ isLoading: true, error: undefined })
+        let {items, cursor} = this.state;
+        cursor +=1;
+/*
+        console.log(ADRESS_IMAGES + cursor);
+*/
+        fetch(ADRESS_IMAGES + cursor)
             .then(response => {
                 for (let pair of response.headers.entries()) {
                     if (pair[0] === 'x-wp-totalpages') {
-                        total_pages =  pair[1];
+                        this.setState(state => ({
+                            total_pages:  pair[1]
+                        }))
                     }
                 }
                 if (response.ok) {
@@ -49,32 +73,26 @@ class GaleryDioramas extends Component {
                     throw new Error('Something went wrong ...');
                 }
             })
-            .then(data => {
-                this.setState({
-                    dioramas: data,
-                    loading: false,
-                    scrolling: false,
-                    total_pages: total_pages
-                })
-            })
-            .catch(
-                error => this.setState({
-                    error,
-                    loading: false
-                })
-            );
-
-        if (page === total_pages) {
-            total_increased = true;
-        }
+            .then(
+                response => {
+                    this.setState(state => ({
+                        items: [...items, ...response],
+                        cursor: cursor,
+                        isLoading: false
+                    }))
+                },
+                error => {
+                    this.setState({ isLoading: false, error })
+                }
+            )
     };
 
-
     render() {
-        const {pageGalery, dioramas, loading, error, total_pages, page, total_increased} = this.state;
-console.log()
-
-        let ls = dioramas.map(diorama => {
+        const {items, total_pages, cursor, isLoading, pageGalery} = this.state;
+        if (cursor <= total_pages) {
+            this.cursor = 'lol';
+        }
+        let ls = items.map(diorama => {
             if (typeof diorama.better_featured_image.media_details.sizes.medium_large !== 'undefined') {
                 return (
                     <div key={diorama.id} className="item">
@@ -91,51 +109,53 @@ console.log()
                             large={diorama.fimg_url}
                             alt={diorama.title.rendered}
                             loader={<RingLoader color={LOADER_COLOR} loading='true'/>}
+                            hideDownload={true}
                         />
                     </div>
                 );
+            } else {
+                return '';
             }
         })
 
         return (
-            <React.Fragment>
-                <div key={pageGalery.id} className="header-galery">
+            <div>
+                <HelmetComponent title={META_TITLE } description={META_DESCRIPTION} canonical={'Galer'} />
+                <div className="header-galery">
                     <h1 dangerouslySetInnerHTML={{
                         __html: pageGalery.title.rendered
                     }}/>
                     <div dangerouslySetInnerHTML={{
                         __html: pageGalery.content.rendered
-                    }}/>
+                }}/>
                 </div>
-                <div style={{ height:"700px", overflow:"auto" }}>
-                    <div>
-                        <div className="columns">
-                            <div className="column">
-                                <div className="masonry">
-                                    <InfiniteScroll
-                                        pageStart={0}
-                                        loadMore={this.loadUser.bind(this)}
-                                        hasMore={total_increased}
-                                        loader={
-                                            <div className="loading" key={0}>
-                                                <div className='sweet-loading'>
-                                                    <CircleLoader
-                                                        color={LOADER_COLOR}
-                                                        loading={true}
-                                                    />
-                                                </div>
-                                            </div>
-                                        }
-                                    >
-                                        {ls}
-                                    </InfiniteScroll>
-                                </div>
+                <InfiniteScroll
+                    throttle={100}
+                    threshold={300}
+                    isLoading={isLoading}
+                    hasMore={!!cursor}
+                    onLoadMore={this.loadUser}
+                >
+                    <div className="columns" key={gen4()}>
+                        <div className="column" key={gen4()}>
+                            <div className="masonry" key={gen4()}>
+                                {ls}
                             </div>
                         </div>
                     </div>
-                </div>
-            </React.Fragment>
-        );
+                </InfiniteScroll>
+                {this.state.isLoading && (
+                    <div className="loading">
+                        <div className='sweet-loading'>
+                            <CircleLoader
+                                color={LOADER_COLOR}
+                                loading={true}
+                            />
+                        </div>
+                    </div>
+                )}
+            </div>
+        )
     }
 }
 
